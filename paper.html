@@ -579,6 +579,7 @@
                     <div class="song-title">Perfect</div>
                     <div class="artist">Ed Sheeran</div>
                 </div>
+                <audio id="audioPlayer" src="music/bestreff.mp3"></audio>
             </div>
             
             <div class="music-visualizer">
@@ -610,7 +611,7 @@
 </div>
     <script>
     // Pesan yang akan diketik otomatis
-    const message = ` Dear Maii,\n\nI just wanna say thank you. Seriously, thank you for everything you've done for me—for all the time you spend, the endless care, the love you always give... all of it. I know I'm not always easy to deal with, but you’re always so patient, and that means the world to me.\n\nI'm sorry if I still mess up sometimes. I don’t always mean to, but I know it can still hurt. I get it if you’re annoyed or tired. But I promise, I’m trying to be better. I can’t do it alone—I need you. Stay with me, okay? Let’s grow and be the best versions of ourselves together.\n\nYou mean so much to me. Not just important, but special—perfect in my eyes. I feel complete when you’re by my side. No matter how tough things get, as long as I have you, I know we can get through anything together.\n\nPlease don’t go... stay here with me. I love you. So much. ❤️`;
+    const message = ` Dear Maii,\n\nI just wanna say thank you. Seriously, thank you for everything you've done for me—for all the time you spend, the endless care, the love you always give... all of it. I know I'm not always easy to deal with, but you're always so patient, and that means the world to me.\n\nI'm sorry if I still mess up sometimes. I don't always mean to, but I know it can still hurt. I get it if you're annoyed or tired. But I promise, I'm trying to be better. I can't do it alone—I need you. Stay with me, okay? Let's grow and be the best versions of ourselves together.\n\nYou mean so much to me. Not just important, but special—perfect in my eyes. I feel complete when you're by my side. No matter how tough things get, as long as I have you, I know we can get through anything together.\n\nPlease don't go... stay here with me. I love you. So much. ❤️`;
 
     const noteContent = document.getElementById('noteContent');
     let lines = [''];
@@ -669,6 +670,7 @@
     function setupMusicPlayer() {
         const playBtn = document.getElementById('playBtn');
         const playIcon = document.getElementById('playIcon');
+        const audio = document.getElementById('audioPlayer');
         let isPlaying = false;
 
         playBtn.addEventListener('click', () => {
@@ -677,16 +679,26 @@
                 playIcon.className = 'fas fa-play';
                 playBtn.setAttribute('aria-label', 'Play music');
                 isPlaying = false;
-                // Here you would pause the actual audio
-                console.log('Music paused');
+                audio.pause();
             } else {
                 // Play music
                 playIcon.className = 'fas fa-pause';
                 playBtn.setAttribute('aria-label', 'Pause music');
                 isPlaying = true;
-                // Here you would play the actual audio
-                console.log('Music playing');
+                audio.play();
             }
+        });
+
+        // Reset icon when audio ends
+        audio.addEventListener('ended', () => {
+            playIcon.className = 'fas fa-play';
+            playBtn.setAttribute('aria-label', 'Play music');
+            isPlaying = false;
+        });
+
+        // Pause audio if user leaves the page
+        window.addEventListener('beforeunload', () => {
+            audio.pause();
         });
     }
 
