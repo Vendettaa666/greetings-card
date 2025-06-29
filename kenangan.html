@@ -10,136 +10,187 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
-            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
             min-height: 100vh;
             font-family: 'Poppins', 'Quicksand', Arial, sans-serif;
             margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
         }
-        .gallery-container {
+        .floating-icon {
+            position: absolute;
+            font-size: 2.2rem;
+            color: rgba(255, 255, 255, 0.3);
+            animation: float 6s ease-in-out infinite;
+            z-index: 1;
+        }
+        .floating-icon:nth-child(1) { top: 8%; left: 12%; animation-delay: 0s; }
+        .floating-icon:nth-child(2) { top: 18%; right: 10%; animation-delay: 1s; }
+        .floating-icon:nth-child(3) { bottom: 18%; left: 10%; animation-delay: 2s; }
+        .floating-icon:nth-child(4) { bottom: 8%; right: 12%; animation-delay: 3s; }
+        .floating-icon:nth-child(5) { top: 55%; left: 5%; animation-delay: 4s; }
+        .floating-icon:nth-child(6) { top: 35%; right: 5%; animation-delay: 5s; }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+        }
+        .kenangan-card-container {
             max-width: 1100px;
+            width: 100vw;
             margin: 0 auto;
-            padding: 32px 12px 48px 12px;
+            padding: 48px 12px 48px 12px;
+            z-index: 10;
         }
-        .gallery-title {
+        .judul-kenangan {
             text-align: center;
             font-size: 2rem;
             font-weight: 700;
-            margin-bottom: 32px;
             color: #c94f7c;
-            letter-spacing: 1px;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
         }
-        .memories-grid {
+        .subjudul-kenangan {
+            text-align: center;
+            color: #888;
+            font-size: 1.05rem;
+            margin-bottom: 32px;
+        }
+        .grid-kenangan {
             display: grid;
             grid-template-columns: 1fr;
             gap: 28px;
         }
         @media (min-width: 600px) {
-            .memories-grid { grid-template-columns: 1fr 1fr; }
+            .grid-kenangan {
+                grid-template-columns: 1fr 1fr;
+        }
         }
         @media (min-width: 900px) {
-            .memories-grid { grid-template-columns: 1fr 1fr 1fr; }
+            .grid-kenangan {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
         }
-        .memory-photo {
+        .card-kenangan {
+            background: linear-gradient(145deg, #fff, #f8f9ff);
+            border-radius: 28px;
+            box-shadow: 0 20px 60px rgba(255, 105, 180, 0.10), 0 8px 32px rgba(0,0,0,0.07), inset 0 1px 0 rgba(255,255,255,0.8);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: box-shadow 0.2s;
+            border: 2px solid rgba(255, 182, 193, 0.13);
+        }
+        .card-kenangan:hover {
+            box-shadow: 0 24px 70px rgba(255,105,180,0.16);
+        }
+        .foto-kenangan {
             width: 100%;
             aspect-ratio: 4/3;
             object-fit: cover;
-            border-radius: 16px;
-            transition: transform 0.3s, box-shadow 0.3s, border 0.3s;
-            box-shadow: 0 2px 8px rgba(255,105,180,0.07);
-            border: 2px solid #fff;
-            background: #eee;
-            display: block;
+            background: #ffe6ef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: #ff69b4;
         }
-        .memory-photo:hover {
-            transform: scale(1.04);
-            border: 2px solid #ff69b4;
-            box-shadow: 0 6px 24px rgba(255,105,180,0.13);
-            z-index: 2;
-        }
-        .memory-item {
+        .isi-card {
+            padding: 20px 18px 16px 18px;
             display: flex;
             flex-direction: column;
-            align-items: flex-start;
-            background: none;
-            box-shadow: none;
-            border-radius: 0;
-            padding: 0;
+            gap: 8px;
         }
-        .memory-date {
-            margin: 10px 0 2px 2px;
-            font-size: 0.98rem;
-            color: #ff69b4;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-        }
-        .memory-desc {
-            margin: 0 0 0 2px;
+        .tanggal-kenangan {
             font-size: 0.97rem;
-            color: #444;
-            font-weight: 400;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 95%;
+            color: #b48ca7;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+        .deskripsi-kenangan {
+            font-size: 1.07rem;
+            color: #4a4a4a;
+            font-weight: 500;
+            line-height: 1.5;
+            margin: 0;
         }
         .navigation-buttons {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-top: 36px;
-            gap: 20px;
-            max-width: 500px;
-            margin-left: auto;
-            margin-right: auto;
+            gap: 16px;
         }
         .nav-btn {
             background: linear-gradient(45deg, #ff69b4, #ff1493);
             color: white;
             border: none;
-            border-radius: 30px;
-            padding: 13px 28px;
+            border-radius: 24px;
+            padding: 12px 28px;
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(255, 105, 180, 0.18);
-            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(255, 105, 180, 0.13);
+            transition: all 0.2s;
+            text-decoration: none;
             display: inline-flex;
             align-items: center;
-            gap: 10px;
-            text-decoration: none;
+            gap: 8px;
         }
         .nav-btn.back {
             background: linear-gradient(45deg, #888, #666);
         }
         .nav-btn:hover, .nav-btn:active {
-            transform: translateY(-2px) scale(1.04);
-            box-shadow: 0 8px 25px rgba(255, 105, 180, 0.25);
+            opacity: 0.92;
+            transform: translateY(-2px) scale(1.03);
         }
     </style>
 </head>
 <body>
-    <div class="gallery-container">
-        <div class="gallery-title">Galeri Kenangan Kita</div>
-        <div class="memories-grid">
-            <div class="memory-item">
-                <img class="memory-photo" src="image/kenangan1.jpg" alt="Kenangan 1" />
-                <div class="memory-date">17 Maret 2024</div>
-                <div class="memory-desc">Awal mula sindrom mba mai</div>
+    <!-- Floating background icons -->
+    <div class="floating-icon"><i class="fas fa-heart"></i></div>
+    <div class="floating-icon"><i class="fas fa-envelope"></i></div>
+    <div class="floating-icon"><i class="fas fa-star"></i></div>
+    <div class="floating-icon"><i class="fas fa-gift"></i></div>
+    <div class="floating-icon"><i class="fas fa-magic"></i></div>
+    <div class="floating-icon"><i class="fas fa-sparkles"></i></div>
+
+    <div class="kenangan-card-container">
+        <div class="judul-kenangan">Kenangan Kita</div>
+        <div class="subjudul-kenangan">Beberapa momen sederhana yang selalu bikin senyum-senyum sendiri.</div>
+        <div class="grid-kenangan">
+            <!-- Card 1 -->
+            <div class="card-kenangan">
+                <div class="foto-kenangan"><img src="image/kenangan1.jpg" alt="Foto kenangan 1" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none';this.parentNode.innerHTML='<i class=\'fas fa-image\'></i>'"></div>
+                <div class="isi-card">
+                    <div class="tanggal-kenangan">17 Maret 2024</div>
+                    <div class="deskripsi-kenangan">Awal mula sindrom mba mai 😁</div>
+                </div>
             </div>
-            <div class="memory-item">
-                <img class="memory-photo" src="image/kenangan2.jpg" alt="Jalan-jalan pertama" />
-                <div class="memory-date">20 Desember 2023</div>
-                <div class="memory-desc">Jalan-jalan pertama di taman kota</div>
+            <!-- Card 2 -->
+            <div class="card-kenangan">
+                <div class="foto-kenangan"><img src="image/kenangan2.jpg" alt="Foto kenangan 2" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none';this.parentNode.innerHTML='<i class=\'fas fa-image\'></i>'"></div>
+                <div class="isi-card">
+                    <div class="tanggal-kenangan">20 Desember 2023</div>
+                    <div class="deskripsi-kenangan">Jalan-jalan pertama bareng, deg-degan tapi seru!</div>
+                </div>
             </div>
-            <div class="memory-item">
-                <img class="memory-photo" src="image/kenangan3.jpg" alt="Natal pertama" />
-                <div class="memory-date">25 Desember 2023</div>
-                <div class="memory-desc">Natal pertama bersama</div>
+            <!-- Card 3 -->
+            <div class="card-kenangan">
+                <div class="foto-kenangan"><img src="image/kenangan3.jpg" alt="Foto kenangan 3" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none';this.parentNode.innerHTML='<i class=\'fas fa-image\'></i>'"></div>
+                <div class="isi-card">
+                    <div class="tanggal-kenangan">25 Desember 2023</div>
+                    <div class="deskripsi-kenangan">Natal pertama bareng kamu, priceless!</div>
+                </div>
             </div>
-            <div class="memory-item">
-                <img class="memory-photo" src="image/kenangan4.jpg" alt="Tahun baru bersama" />
-                <div class="memory-date">1 Januari 2024</div>
-                <div class="memory-desc">Tahun baru bersama</div>
+            <!-- Card 4 -->
+            <div class="card-kenangan">
+                <div class="foto-kenangan"><img src="image/kenangan4.jpg" alt="Foto kenangan 4" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none';this.parentNode.innerHTML='<i class=\'fas fa-image\'></i>'"></div>
+                <div class="isi-card">
+                    <div class="tanggal-kenangan">1 Januari 2024</div>
+                    <div class="deskripsi-kenangan">Tahun baru, harapan baru, bareng kamu.</div>
+                </div>
             </div>
         </div>
         <div class="navigation-buttons">
@@ -148,8 +199,7 @@
                 Kembali
             </a>
             <a href="lagu.html" class="nav-btn next">
-                <i class="fas fa-arrow-right"></i>
-                Selanjutnya
+                Selanjutnya <i class="fas fa-arrow-right"></i>
             </a>
         </div>
     </div>
