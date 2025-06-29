@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kenangan Kita</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="main.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Quicksand:wght@400;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+            min-height: 100vh;
+            font-family: 'Poppins', 'Quicksand', Arial, sans-serif;
+            position: relative;
+            overflow-x: hidden;
+            overflow-y: auto;
+            margin: 0;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .floating-icon {
+            position: fixed;
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.2);
+            animation: float 6s ease-in-out infinite;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .floating-icon:nth-child(1) { top: 5%; left: 8%; animation-delay: 0s; }
+        .floating-icon:nth-child(2) { top: 15%; right: 8%; animation-delay: 1s; }
+        .floating-icon:nth-child(3) { bottom: 15%; left: 8%; animation-delay: 2s; }
+        .floating-icon:nth-child(4) { bottom: 5%; right: 8%; animation-delay: 3s; }
+        .floating-icon:nth-child(5) { top: 50%; left: 3%; animation-delay: 4s; }
+        .floating-icon:nth-child(6) { top: 25%; right: 3%; animation-delay: 5s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(5deg); }
+        }
+
+        .diary-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px 15px 50px 15px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .diary-header {
+            text-align: center;
+            margin-bottom: 40px;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);
+            border-radius: 30px;
+            padding: 40px 30px;
+            box-shadow: 0 25px 60px rgba(255, 105, 180, 0.12), 0 10px 30px rgba(0,0,0,0.08);
+            border: 2px solid rgba(255, 182, 193, 0.2);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .diary-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #ff69b4, #ff1493, #ff69b4, #ff1493, #ff69b4);
+            border-radius: 30px 30px 0 0;
+        }
+
+        .diary-header::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(255, 105, 180, 0.05) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: -1;
+        }
+
+        .diary-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, #ff69b4, #ff1493);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+
+        .diary-subtitle {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 20px;
+            font-weight: 400;
+            line-height: 1.6;
+        }
+
+        .header-icons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .icon-item {
+            font-size: 1.5rem;
+            color: #ff69b4;
+            animation: floatIcon 3s ease-in-out infinite;
+            transition: all 0.3s ease;
+            padding: 12px;
+            background: rgba(255, 105, 180, 0.1);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .icon-item:nth-child(1) { animation-delay: 0s; }
+        .icon-item:nth-child(2) { animation-delay: 0.6s; }
+        .icon-item:nth-child(3) { animation-delay: 1.2s; }
+        .icon-item:nth-child(4) { animation-delay: 1.8s; }
+
+        @keyframes floatIcon {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(5deg); }
+        }
+
+        .memories-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .memory-entry {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);
+            border-radius: 25px;
+            box-shadow: 0 20px 50px rgba(255, 105, 180, 0.1), 0 8px 25px rgba(0,0,0,0.05);
+            border: 2px solid rgba(255, 182, 193, 0.15);
+            overflow: hidden;
+            position: relative;
+            transition: all 0.5s ease;
+            transform: translateY(0);
+        }
+
+        .memory-entry:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 30px 70px rgba(255, 105, 180, 0.2), 0 15px 35px rgba(0,0,0,0.1);
+        }
+
+        .memory-entry::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #ff69b4, #ff1493, #ff69b4);
+        }
+
+        .entry-date {
+            background: linear-gradient(45deg, #ff69b4, #ff1493);
+            color: white;
+            padding: 12px 25px;
+            font-size: 1rem;
+            font-weight: 700;
+            text-align: center;
+            border-radius: 0 0 20px 20px;
+            margin: 0 25px;
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 5px 20px rgba(255, 105, 180, 0.3);
+            letter-spacing: 0.5px;
+        }
+
+        .entry-content {
+            padding: 30px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+        }
+
+        .photo-container {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+            transition: all 0.4s ease;
+            aspect-ratio: 16/9;
+        }
+
+        .photo-container:hover {
+            transform: scale(1.03);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+        }
+
+        .placeholder-photo {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ffe6e6, #ffd6d6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ff69b4;
+            font-size: 4rem;
+            transition: all 0.3s ease;
+        }
+
+        .photo-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom, transparent 40%, rgba(0,0,0,0.5));
+            display: flex;
+            align-items: flex-end;
+            padding: 30px;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .photo-container:hover .photo-overlay {
+            opacity: 1;
+        }
+
+        .photo-caption {
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.7);
+            background: rgba(255, 105, 180, 0.9);
+            padding: 10px 20px;
+            border-radius: 25px;
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .entry-text {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: #4a4a4a;
+            text-align: justify;
+            font-weight: 400;
+            padding: 0 5px;
+        }
+
+        .entry-mood {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 20px 25px;
+            background: linear-gradient(135deg, rgba(255, 105, 180, 0.08), rgba(255, 20, 147, 0.08));
+            border-radius: 20px;
+            border: 1px solid rgba(255, 105, 180, 0.15);
+            margin-top: 10px;
+        }
+
+        .mood-icon {
+            font-size: 1.6rem;
+            background: linear-gradient(45deg, #ff69b4, #ff1493);
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(255, 105, 180, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .mood-icon:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .mood-text {
+            font-size: 1rem;
+            color: #555;
+            font-weight: 600;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+            gap: 20px;
+        }
+
+        .nav-btn {
+            background: linear-gradient(45deg, #ff69b4, #ff1493);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 15px 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(255, 105, 180, 0.3);
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            -webkit-tap-highlight-color: transparent;
+            min-height: 50px;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-btn:hover, .nav-btn:active {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 12px 35px rgba(255, 105, 180, 0.4);
+        }
+
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(0);
+            animation: ripple-animation 0.6s linear;
+            pointer-events: none;
+        }
+
+        @keyframes ripple-animation {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        .nav-btn.back {
+            background: linear-gradient(45deg, #888, #666);
+        }
+
+        .nav-btn.back:hover {
+            background: linear-gradient(45deg, #777, #555);
+        }
+
+        @media (min-width: 768px) {
+            .diary-container {
+                padding: 30px 20px 60px 20px;
+            }
+            
+            .diary-header {
+                padding: 50px 40px;
+                margin-bottom: 50px;
+            }
+            
+            .diary-title {
+                font-size: 2.8rem;
+            }
+            
+            .diary-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .memories-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 35px;
+            }
+            
+            .entry-content {
+                padding: 35px;
+            }
+            
+            .entry-text {
+                font-size: 1.1rem;
+                line-height: 1.9;
+            }
+            
+            .mood-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 1.8rem;
+            }
+            
+            .mood-text {
+                font-size: 1.1rem;
+            }
+            
+            .navigation-buttons {
+                margin-top: 50px;
+            }
+            
+            .nav-btn {
+                padding: 18px 35px;
+                font-size: 1.1rem;
+                border-radius: 35px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .diary-container {
+                max-width: 1400px;
+                padding: 40px 30px 70px 30px;
+            }
+            
+            .memories-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 40px;
+            }
+            
+            .entry-content {
+                padding: 40px;
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .memories-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 45px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating background icons -->
+    <div class="floating-icon"><i class="fas fa-heart"></i></div>
+    <div class="floating-icon"><i class="fas fa-camera"></i></div>
+    <div class="floating-icon"><i class="fas fa-star"></i></div>
+    <div class="floating-icon"><i class="fas fa-book-open"></i></div>
+    <div class="floating-icon"><i class="fas fa-magic"></i></div>
+    <div class="floating-icon"><i class="fas fa-sparkles"></i></div>
+
+    <div class="diary-container">
+        <!-- Diary Header -->
+        <div class="diary-header">
+            <h1 class="diary-title">📖 Kenangan Kita</h1>
+            <p class="diary-subtitle">Setiap momen bersamamu adalah cerita indah yang ingin kuceritakan</p>
+            <div class="header-icons">
+                <div class="icon-item"><i class="fas fa-heart"></i></div>
+                <div class="icon-item"><i class="fas fa-camera"></i></div>
+                <div class="icon-item"><i class="fas fa-book-open"></i></div>
+                <div class="icon-item"><i class="fas fa-star"></i></div>
+            </div>
+        </div>
+
+        <!-- Memories Grid -->
+        <div class="memories-grid">
+            <!-- Memory Entry 1 -->
+            <div class="memory-entry">
+                <div class="entry-date">15 Desember 2023</div>
+                <div class="entry-content">
+                    <div class="photo-container">
+                        <div class="placeholder-photo">
+                            <i class="fas fa-image"></i>
+                        </div>
+                        <div class="photo-overlay">
+                            <div class="photo-caption">Pertama kali bertemu</div>
+                        </div>
+                    </div>
+                    <div class="entry-text">
+                        Saat pertama kali melihatmu, hatiku langsung berdebar kencang. Senyumanmu yang hangat membuat dunia terasa lebih indah. Pertemuan sederhana ini mengubah hidupku selamanya.
+                    </div>
+                    <div class="entry-mood">
+                        <div class="mood-icon">😊</div>
+                        <div class="mood-text">Bahagia dan gugup</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Memory Entry 2 -->
+            <div class="memory-entry">
+                <div class="entry-date">20 Desember 2023</div>
+                <div class="entry-content">
+                    <div class="photo-container">
+                        <div class="placeholder-photo">
+                            <i class="fas fa-image"></i>
+                        </div>
+                        <div class="photo-overlay">
+                            <div class="photo-caption">Jalan-jalan pertama</div>
+                        </div>
+                    </div>
+                    <div class="entry-text">
+                        Menghabiskan waktu berjalan-jalan di taman kota. Mendengar tawamu, melihat matamu yang berbinar, dan merasakan kehangatan tanganmu. Setiap langkah bersamamu terasa seperti mimpi.
+                    </div>
+                    <div class="entry-mood">
+                        <div class="mood-icon">💕</div>
+                        <div class="mood-text">Romantis dan tenang</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Memory Entry 3 -->
+            <div class="memory-entry">
+                <div class="entry-date">25 Desember 2023</div>
+                <div class="entry-content">
+                    <div class="photo-container">
+                        <div class="placeholder-photo">
+                            <i class="fas fa-image"></i>
+                        </div>
+                        <div class="photo-overlay">
+                            <div class="photo-caption">Natal pertama</div>
+                        </div>
+                    </div>
+                    <div class="entry-text">
+                        Natal terasa sangat spesial karena dirayakan bersamamu. Melihat kegembiraanmu saat membuka hadiah dan mendengar tawamu yang tulus. Kamu adalah hadiah terindah dalam hidupku.
+                    </div>
+                    <div class="entry-mood">
+                        <div class="mood-icon">🎄</div>
+                        <div class="mood-text">Penuh cinta dan syukur</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Memory Entry 4 -->
+            <div class="memory-entry">
+                <div class="entry-date">1 Januari 2024</div>
+                <div class="entry-content">
+                    <div class="photo-container">
+                        <div class="placeholder-photo">
+                            <i class="fas fa-image"></i>
+                        </div>
+                        <div class="photo-overlay">
+                            <div class="photo-caption">Tahun baru bersama</div>
+                        </div>
+                    </div>
+                    <div class="entry-text">
+                        Mengawali tahun baru bersamamu adalah permulaan yang sempurna. Melihat kembang api bersama dan berjanji untuk selalu ada satu sama lain. Tahun ini akan menjadi yang terbaik.
+                    </div>
+                    <div class="entry-mood">
+                        <div class="mood-icon">✨</div>
+                        <div class="mood-text">Penuh harapan dan cinta</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="navigation-buttons">
+            <a href="paper.html" class="nav-btn back">
+                <i class="fas fa-arrow-left"></i>
+                Kembali
+            </a>
+            <a href="lagu.html" class="nav-btn next">
+                <i class="fas fa-arrow-right"></i>
+                Selanjutnya
+            </a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate memory entries on scroll with staggered effect
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.style.opacity = '1';
+                            entry.target.style.transform = 'translateY(0) scale(1)';
+                        }, index * 150); // Staggered animation
+                    }
+                });
+            }, observerOptions);
+
+            // Observe all memory entries
+            document.querySelectorAll('.memory-entry').forEach((entry, index) => {
+                entry.style.opacity = '0';
+                entry.style.transform = 'translateY(30px) scale(0.95)';
+                entry.style.transition = `all 0.6s ease ${index * 0.1}s`;
+                observer.observe(entry);
+            });
+
+            // Add enhanced click effects to photos
+            document.querySelectorAll('.photo-container').forEach(photo => {
+                photo.addEventListener('click', function() {
+                    this.style.transform = 'scale(0.98)';
+                    setTimeout(() => {
+                        this.style.transform = 'scale(1.03)';
+                    }, 150);
+                    setTimeout(() => {
+                        this.style.transform = 'scale(1)';
+                    }, 300);
+                });
+            });
+
+            // Add hover effects to mood icons
+            document.querySelectorAll('.mood-icon').forEach(icon => {
+                icon.addEventListener('mouseenter', function() {
+                    this.style.transform = 'scale(1.2) rotate(10deg)';
+                });
+                
+                icon.addEventListener('mouseleave', function() {
+                    this.style.transform = 'scale(1) rotate(0deg)';
+                });
+            });
+
+            // Add ripple effect to navigation buttons
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    const ripple = document.createElement('span');
+                    const rect = this.getBoundingClientRect();
+                    const size = Math.max(rect.width, rect.height);
+                    const x = e.clientX - rect.left - size / 2;
+                    const y = e.clientY - rect.top - size / 2;
+                    
+                    ripple.style.width = ripple.style.height = size + 'px';
+                    ripple.style.left = x + 'px';
+                    ripple.style.top = y + 'px';
+                    ripple.classList.add('ripple');
+                    
+                    this.appendChild(ripple);
+                    
+                    setTimeout(() => {
+                        ripple.remove();
+                    }, 600);
+                });
+            });
+
+            // Add floating animation to header icons
+            document.querySelectorAll('.icon-item').forEach((icon, index) => {
+                icon.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-15px) rotate(10deg) scale(1.1)';
+                });
+                
+                icon.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) rotate(0deg) scale(1)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
